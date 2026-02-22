@@ -46,7 +46,7 @@ from launch.substitutions import (
     PathJoinSubstitution
 )
 
-from launch_ros.actions import PushRosNamespace, SetRemap
+from launch_ros.actions import PushRosNamespace, SetRemap, Node
 
 from nav2_common.launch import RewrittenYaml
 
@@ -119,6 +119,25 @@ def launch_setup(context, *args, **kwargs):
                 ('use_composition', 'False'),
                 ('namespace', namespace)
               ]
+        ),
+        # The following server node
+        Node(
+            package='opennav_following',
+            executable='opennav_following',
+            name='following_server',
+            output='screen',
+            parameters=[rewritten_parameters, {'use_sim_time': use_sim_time}],
+        ),
+
+        # Dedicated lifecycle manager for the following server
+        Node(
+            package='nav2_lifecycle_manager',
+            executable='lifecycle_manager',
+            name='following_lifecycle_manager',
+            output='screen',
+            parameters=[{'use_sim_time': use_sim_time},
+                        {'autostart': True},
+                        {'node_names': ['following_server']}]
         ),
     ])
 
