@@ -13,7 +13,7 @@ ARGUMENTS = [
     DeclareLaunchArgument('use_sim_time', default_value='false', choices=['true', 'false']),
     DeclareLaunchArgument('setup_path', default_value='/etc/clearpath/'),
     DeclareLaunchArgument('scan_topic', default_value=''),
-    DeclareLaunchArgument('robot_base_frame', default_value='chassis_link')
+    DeclareLaunchArgument('robot_base_frame', default_value='base_link')
 ]
 
 def launch_setup(context, *args, **kwargs):
